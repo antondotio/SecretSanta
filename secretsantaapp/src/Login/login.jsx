@@ -1,6 +1,13 @@
 import React from 'react';
 import './login.css';
-import Signup from '../Signup/signup';
+
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch,
+    Link,
+    Redirect
+  } from "react-router-dom";
 
 const Login = () => {
   return (
@@ -13,19 +20,16 @@ const Login = () => {
           Login
         </p>
       </header>
-      <form>
-        <input type="text" placeholder="email or username"></input><br></br>
-        <input type="password" placeholder="password"></input><br></br>
+      <form action="localhost:3000/signup">
+        <input type="text" placeholder="Email or Username"></input><br></br>
+        <input type="password" placeholder="Password"></input><br></br>
         <button type="submit">Submit</button><br></br> 
-        <button type="button" onClick={() => signUp()}>Sign Up</button>
+        <Link to="/signup">
+            <button type="button">Sign Up</button>
+        </Link>
       </form>
     </div>
   );
 }
-
-function signUp() {
-    
-}
-
 
 export default Login;
