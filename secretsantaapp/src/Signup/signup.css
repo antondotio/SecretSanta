@@ -1,0 +1,13 @@
+.Signup { 
+    background-color: #975252; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .Signup-header {
+    font-size: calc(50px + 2vmin);
+    color: white;
+  }
+  
