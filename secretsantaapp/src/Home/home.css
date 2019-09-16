@@ -1,0 +1,33 @@
+.Home { 
+    background-color: #975252; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+
+  .App-header a {
+  float: center;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 20px;
+}
+  
+  .App-header {
+    font-size: calc(50px + 2vmin);
+    color: white;
+  }
+  
+  .App-subheader {
+    font-size: calc(20px + 2vmin);
+    color: white;
+  }
+  
+  input { 
+    width: calc(350px + 2vmin);
+    height: calc(50px + 2vmin);
+    font-size: calc(10px + 2vmin)
+  }
