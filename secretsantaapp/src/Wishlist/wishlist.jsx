@@ -10,6 +10,9 @@ const Wishlist = () => {
             <p>
             Secret Santa
             </p>
+            <a href="/home">Home</a>
+            <a href="/groups">Groups</a>
+            <a class="active" href="/wishlist">Wishlist</a><br></br>
             
         </header>
         
