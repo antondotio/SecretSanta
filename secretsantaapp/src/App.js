@@ -11,6 +11,8 @@ import {
 import Login from './Login/login';
 import Signup from './Signup/signup';
 import Home from './Home/home'
+import Groups from './Groups/groups'
+import Wishlist from './Wishlist/wishlist'
 
 class App extends Component { 
   render () {
@@ -20,6 +22,8 @@ class App extends Component {
             <Route exact path="/" component={Login}/>
             <Route exact path="/signup" component={Signup}/>
             <Route exact path="/home" component={Home}/>
+            <Route exact path="/groups" component={Groups}/>
+            <Route exact path="/wishlist" component={Wishlist}/>
           </Switch>
         </Router>
       );
