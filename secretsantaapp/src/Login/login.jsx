@@ -1,7 +1,7 @@
 import React from 'react';
-import './signup.css';
+import './login.css';
 
-function signup() {
+const Login = () => {
   return (
     <div className="App">
       <header className="App-header">
@@ -24,4 +24,4 @@ function signup() {
 }
 
 
-// export default App;
+export default Login;
