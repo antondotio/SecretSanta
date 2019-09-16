@@ -20,7 +20,7 @@ const Login = () => {
           Login
         </p>
       </header>
-      <form action="localhost:3000/signup">
+      <form>
         <input type="text" placeholder="Email or Username"></input><br></br>
         <input type="password" placeholder="Password"></input><br></br>
         <button type="submit">Submit</button><br></br> 
