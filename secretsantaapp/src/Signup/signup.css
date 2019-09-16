@@ -10,4 +10,10 @@
     font-size: calc(50px + 2vmin);
     color: white;
   }
+
+input { 
+    width: calc(350px + 2vmin);
+    height: calc(50px + 2vmin);
+    font-size: calc(10px + 2vmin)
+  }
   
