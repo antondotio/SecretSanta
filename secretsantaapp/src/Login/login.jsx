@@ -1,5 +1,6 @@
 import React from 'react';
 import './login.css';
+import Signup from '../Signup/signup';
 
 const Login = () => {
   return (
@@ -16,11 +17,14 @@ const Login = () => {
         <input type="text" placeholder="email or username"></input><br></br>
         <input type="password" placeholder="password"></input><br></br>
         <button type="submit">Submit</button><br></br> 
-        <button type="button">Sign Up</button>
+        <button type="button" onClick={() => signUp()}>Sign Up</button>
       </form>
-     
     </div>
   );
+}
+
+function signUp() {
+    
 }
 
 

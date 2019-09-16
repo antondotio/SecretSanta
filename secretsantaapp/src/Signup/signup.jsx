@@ -3,7 +3,7 @@ import './signup.css';
 
 const Signup = () => {
   return (
-    <div className="App">
+    <div className="Signup">
       <h1>hi</h1>
     </div>
   );
