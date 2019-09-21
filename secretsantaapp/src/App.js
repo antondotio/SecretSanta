@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import fire from './config/Fire';
 
 import {
   BrowserRouter as Router,
@@ -9,15 +10,38 @@ import {
 } from "react-router-dom";
 
 import Login from './Login/login';
-import Signup from './Signup/signup';
+import Signup from './Signup/signup'; 
 import Home from './Home/home'
 import Groups from './Groups/groups'
 import Wishlist from './Wishlist/wishlist'
 
 class App extends Component { 
+  constructor(props){
+    super(props);
+
+    this.state = {
+      user: {},
+    };
+  }
+
+  componentDidMount(){
+    this.authListener();
+  }
+
+  authListener() {
+    fire.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        this.setState({ user });
+      } else {
+        this.setState({ user: null });
+      }
+    });
+  }
   render () {
     return (
-        <Router>
+      <div>
+        {this.state.user ? (<Home/>) : (<Login/>)} 
+        {/* <Router>
           <Switch>
             <Route exact path="/" component={Login}/>
             <Route exact path="/signup" component={Signup}/>
@@ -25,7 +49,8 @@ class App extends Component {
             <Route exact path="/groups" component={Groups}/>
             <Route exact path="/wishlist" component={Wishlist}/>
           </Switch>
-        </Router>
+        </Router> */}
+      </div>
       );
   }
 }
