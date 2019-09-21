@@ -8,9 +8,7 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
-import Login from '../Login/login';
-// not working because we are in signup folder not src
-//src/signup/config does not exist
+
 
 class Signup extends Component {
 

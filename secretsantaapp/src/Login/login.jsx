@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './login.css';
+import fire from '../config/Fire';
 
 import {
     BrowserRouter as Router,
@@ -9,7 +10,7 @@ import {
     Redirect
   } from "react-router-dom";
 
-const Login = () => {
+class Login extends Component {
   return (
     <div className="App">
       <header className="App-header">
