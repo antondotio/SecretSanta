@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import './signup.css';
-import Firebase  from 'firebase';
+import fire from '../config/Fire';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Link,
+  Redirect
+} from "react-router-dom";
 
-function InputField(props) {
-  return(
-    <input type={props.type} placeholder={props.text}>
-    </input>
-  );
-}
 
 class Signup extends Component {
 
@@ -20,6 +21,7 @@ class Signup extends Component {
       email: '',
       password: '',
       confirmPassword: '',
+      complete: false,
     };
 
     this.handleFnameChange = this.handleFnameChange.bind(this);
@@ -56,31 +58,63 @@ class Signup extends Component {
   }
 
   render() {
-    return (
-      <div className="Signup">
-        <header className="Signup-header">
-          <p>
-            Secret Santa
-          </p>
-          <p className="App-subheader">
-            Sign Up
-          </p>
-        </header>
-        <form>
-          <input type="text" placeholder="First Name" value={this.state.firstName} onChange={this.handleFnameChange}></input>
-          <input type="text" placeholder="Last Name" value={this.state.lastName} onChange={this.handleLnameChange}></input><br></br>
-          <input type="text" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange} ></input><br></br>
-          <input type="text" placeholder="Username" value={this.state.userName} onChange={this.handleUnameChange}></input><br></br>
-          <input type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input><br></br>
-          <input type="password" placeholder="Confirm Password" value={this.state.confirmPassword} onChange={this.handleCpasswordChange}></input><br></br>
-          <button type="button" onClick={() => this.signUp()}>Sign Up</button><br></br>  
-        </form>
-      </div>
-    );
+    if(this.state.complete == true) {
+      return (
+        <Router>
+          <Switch>
+            <Redirect to="/"></Redirect>
+          </Switch>
+        </Router>
+      );
+    } else {
+      return (
+        <div className="Signup">
+          <header className="Signup-header">
+            <p>
+              Secret Santa
+            </p>
+            <p className="App-subheader">
+              Sign Up
+            </p>
+          </header>
+          <form>
+            <input type="text" placeholder="First Name" value={this.state.firstName} onChange={this.handleFnameChange}></input>
+            <input type="text" placeholder="Last Name" value={this.state.lastName} onChange={this.handleLnameChange}></input><br></br>
+            <input type="text" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange} ></input><br></br>
+            <input type="text" placeholder="Username" value={this.state.userName} onChange={this.handleUnameChange}></input><br></br>
+            <input type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input><br></br>
+            <input type="password" placeholder="Confirm Password" value={this.state.confirmPassword} onChange={this.handleCpasswordChange}></input><br></br>
+            <Link to="/">
+              <button type="button" onClick={() => this.signUp()}>Sign Up</button><br></br>
+            </Link> 
+          </form>
+        </div>
+      );
+    }
   }
   
   signUp() {
-    alert(this.state.firstName);
+    if(!this.state.firstName || !this.state.lastName || !this.state.username || !this.state.email
+      || !this.state.password || !this.state.confirmPassword) {
+      alert("must fill in all text fields");
+    } else {
+        if(this.state.confirmPassword == this.state.password) {
+          fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+            // Deal with error if the new user already exists
+            var errorCode = error.code;
+            var errorMessage = error.message;
+          });
+          this.saveNewUser();
+      }
+    }
+  }
+
+  saveNewUser() {
+    fire.firestore().collection("users").add({
+      //id: fire.auth().currentUser().getUid(),
+      email: this.state.email
+    });
+    //this.setState({complete: true});
   }
 }
 
