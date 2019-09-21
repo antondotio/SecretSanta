@@ -1,0 +1,17 @@
+.CreateGroup { 
+    background-color: #975252; 
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .App-header {
+    font-size: calc(50px + 2vmin);
+    color: white;
+  }
+  
+  .Subheader {
+    font-size: calc(20px + 2vmin);
+    color: white;
+  }
