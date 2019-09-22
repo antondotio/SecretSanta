@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import './wishlist.css';
 import fire from '../config/Fire';
 
+
 class Wishlist extends Component {
+  
   render() {
     return (
       <div className="Wishlist">
-          
           <header className="App-header">
               <p>
               Secret Santa
@@ -15,7 +16,8 @@ class Wishlist extends Component {
               <a href="/groups">Groups</a>
               <a class="active" href="/wishlist">Wishlist</a>
               <button type="button" onClick={this.logout}>Logout</button><br></br>
-          </header>        
+          </header>
+          <h3 class="Subheader">WishList</h3>
       </div>
     );
   }
