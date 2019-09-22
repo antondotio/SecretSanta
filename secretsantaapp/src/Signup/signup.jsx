@@ -58,39 +58,29 @@ class Signup extends Component {
   }
 
   render() {
-    if(this.state.complete == true) {
-      return (
-        <Router>
-          <Switch>
-            <Redirect to="/"></Redirect>
-          </Switch>
-        </Router>
-      );
-    } else {
-      return (
-        <div className="Signup">
-          <header className="Signup-header">
-            <p>
-              Secret Santa
-            </p>
-            <p className="App-subheader">
-              Sign Up
-            </p>
-          </header>
-          <form>
-            <input type="text" placeholder="First Name" value={this.state.firstName} onChange={this.handleFnameChange}></input>
-            <input type="text" placeholder="Last Name" value={this.state.lastName} onChange={this.handleLnameChange}></input><br></br>
-            <input type="text" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange} ></input><br></br>
-            <input type="text" placeholder="Username" value={this.state.userName} onChange={this.handleUnameChange}></input><br></br>
-            <input type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input><br></br>
-            <input type="password" placeholder="Confirm Password" value={this.state.confirmPassword} onChange={this.handleCpasswordChange}></input><br></br>
-            <Link to="/">
-              <button type="button" onClick={() => this.signUp()}>Sign Up</button><br></br>
-            </Link> 
-          </form>
-        </div>
-      );
-    }
+    return (
+      <div className="Signup">
+        <header className="Signup-header">
+          <p>
+            Secret Santa
+          </p>
+          <p className="App-subheader">
+            Sign Up
+          </p>
+        </header>
+        <form>
+          <input type="text" placeholder="First Name" value={this.state.firstName} onChange={this.handleFnameChange}></input>
+          <input type="text" placeholder="Last Name" value={this.state.lastName} onChange={this.handleLnameChange}></input><br></br>
+          <input type="text" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange} ></input><br></br>
+          <input type="text" placeholder="Username" value={this.state.userName} onChange={this.handleUnameChange}></input><br></br>
+          <input type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input><br></br>
+          <input type="password" placeholder="Confirm Password" value={this.state.confirmPassword} onChange={this.handleCpasswordChange}></input><br></br>
+          <Link to="/">
+            <button type="button" onClick={() => this.signUp()}>Sign Up</button><br></br>
+          </Link> 
+        </form>
+      </div>
+    );
   }
   
   signUp() {
