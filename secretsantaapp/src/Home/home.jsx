@@ -57,7 +57,7 @@ class Home extends Component {
                 <button type="button" onClick={() => this.joinGroup()}>Join Group</button><br></br>
               </Link> 
             </Router>
-                <button type="button" onClick={this.createGroup}>Create Group</button><br></br>  
+                <button type="button" onClick={this.createGroup}>Create Group</button><br></br>
           </form>
       </div>
     );
