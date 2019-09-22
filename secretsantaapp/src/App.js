@@ -50,6 +50,7 @@ class App extends Component {
             <Route exact path="/home" component={Home}/>
             <Route exact path="/groups" component={Groups}/>
             <Route exact path="/creategroup" component={CreateGroup}/>
+            <Route exact path="/groups/:id" component={Groups}/>
             <Route exact path="/wishlist" component={Wishlist}/>
           </Switch>
         </Router> */}

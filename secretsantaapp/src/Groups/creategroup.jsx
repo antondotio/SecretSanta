@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import fire from '../config/Fire';
 import './creategroup.css';
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch,
-    Link,
-    Redirect
-  } from "react-router-dom";
+// import {
+//     BrowserRouter as Router,
+//     Route,
+//     Switch,
+//     Link,
+//     Redirect
+//   } from "react-router-dom";
 
 var shortid = require("shortid");
 
@@ -60,15 +60,22 @@ class CreateGroup extends Component {
     }
 
     createGroup(){
-        if(!this.state.groupName || !this.state.budget){
+        if(!this.state.groupName || !this.state.budget || !this.state.id){
             alert("must fill in all text fields");
         } else {
             fire.firestore().collection("groups").add({
                 id: this.state.id,
                 groupName: this.state.groupName,
                 budget: this.state.budget,
+            })
+            .then(function(docRef) {
+                console.log("Document written with ID: ", docRef.id)
+            })
+            .catch(function(error) {
+                console.error("Error adding document: ", error);
             });
             window.location = '/groups/' + this.state.id;
+            alert("added!");
         }
     }
 }
