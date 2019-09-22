@@ -34,6 +34,7 @@ class Home extends Component {
           <Router>
             <Switch>
               <Route exact path="/groups" component={Groups}/>
+              <Route exact path="/groups/:groupCode" component={Groups}/>
               <Route exact path="/creategroup" component={CreateGroup}/>
               <Route exact path="/wishlist" component={Wishlist}/>
             </Switch>
@@ -52,11 +53,9 @@ class Home extends Component {
           </header>
           <form>
             <input type="text" placeholder="Group Code" value={this.state.groupCode} onChange={this.handleGcodeChange}></input><br></br>
-            <Router>
-              <Link to ='/groups/:groupCode'>
+            
                 <button type="button" onClick={() => this.joinGroup()}>Join Group</button><br></br>
-              </Link> 
-            </Router>
+            
                 <button type="button" onClick={this.createGroup}>Create Group</button><br></br>
             
             
@@ -66,8 +65,8 @@ class Home extends Component {
   }
 
   joinGroup(event){
-    event.preventDefault();
-    window.location = '/groups/:groupCode';
+    //TODO: Redirect to 404 if page not found
+    window.location = '/groups/' + this.state.groupCode;
   }
 
   createGroup(event){

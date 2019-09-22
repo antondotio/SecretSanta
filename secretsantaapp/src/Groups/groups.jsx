@@ -3,30 +3,34 @@ import './groups.css';
 import fire from '../config/Fire';
 
 
-class Groups extends Component {
-  render () {
-    return (
-        <div className="Groups">
-            
-            <header className="App-header">
-                <p>
-                Secret Santa
-                </p>
-                <a href="/home">Home</a>
-                <a class="active" href="/groups">Groups</a>
-                <a href="/wishlist">Wishlist</a>
-                <button type="button" onClick={this.logout}>Logout</button><br></br>
-                
-            </header>
-            
+function logout(){
+  //fire.auth().signOut();
+}
+
+const Groups = ({match}) => {
+  var docRef = fire.firestore().collection("groups").doc(match.params.groupCode);
+  var id, name, budget;
+  docRef.get().then(function(doc) {
+    if(doc.exists) {
+      id = doc.groupCode;
+    }
+  });
+
+  return (
+      <div className="Groups">
+          
+          <header className="App-header">
+              <p>
+              Secret Santa
+              </p>
+              <a href="/home">Home</a>
+              <a class="active" href="/groups">Groups</a>
+              <a href="/wishlist">Wishlist</a>
+              {/* <button type="button" onClick={logout()}>Logout</button><br></br>            */}
+          </header>      
         </div>
       );
   }
 
-  logout(){
-    fire.auth().signOut();
-  }
-
-}
 
 export default Groups;

@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import fire from '../config/Fire';
 import './creategroup.css';
-// import {
-//     BrowserRouter as Router,
-//     Route,
-//     Switch,
-//     Link,
-//     Redirect
-//   } from "react-router-dom";
+import { FORMERR } from 'dns';
+import {
+    Redirect
+  } from "react-router-dom";
 
 var shortid = require("shortid");
 
@@ -18,6 +15,7 @@ class CreateGroup extends Component {
             id: shortid.generate(),
             groupName: '',
             budget: '',
+            created: false,
         };
         
         this.handleGnameChange = this.handleGnameChange.bind(this);
@@ -33,6 +31,11 @@ class CreateGroup extends Component {
     }
 
     render() {
+        if(this.state.created) {
+            return(
+                <Redirect to={"/groups/" + this.state.id}></Redirect>
+            );
+        }
         return(
             <div className="CreateGroup">
                 <header className="App-header">
@@ -63,21 +66,24 @@ class CreateGroup extends Component {
         if(!this.state.groupName || !this.state.budget || !this.state.id){
             alert("must fill in all text fields");
         } else {
-            fire.firestore().collection("groups").add({
-                id: this.state.id,
-                groupName: this.state.groupName,
-                budget: this.state.budget,
-            })
-            .then(function(docRef) {
-                console.log("Document written with ID: ", docRef.id)
-            })
-            .catch(function(error) {
-                console.error("Error adding document: ", error);
-            });
-            window.location = '/groups/' + this.state.id;
-            alert("added!");
+            this.saveNewGroup();
+            this.setState({created: true});
         }
     }
+
+    saveNewGroup(){
+        var data = {
+            id: this.state.id,
+            groupName: this.state.groupName,
+            budget: this.state.budget,
+        };
+
+        fire.firestore().collection("groups").doc(this.state.id).set(data).then(function() {
+            alert("works");
+        });
+        // window.location = "/groups/" + this.state.id;
+    }
+        
 }
 
 export default CreateGroup;
