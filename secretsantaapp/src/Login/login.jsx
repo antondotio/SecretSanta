@@ -11,6 +11,8 @@ import {
     Redirect
   } from "react-router-dom";
 
+  import Signup from '../Signup/signup';
+
 class Login extends Component {
   constructor (props){
     super(props);
@@ -23,6 +25,7 @@ class Login extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.checkLogin = this.checkLogin.bind(this);
+    this.signup = this.signup.bind(this);
 
   }
 
@@ -37,6 +40,11 @@ class Login extends Component {
   render () {
     return (
       <div className="App">
+        <Router>
+          <Switch>
+            <Route exact path="/signup" component={Signup}/>
+          </Switch>
+        </Router>
         <header className="App-header">
           <p>
             Secret Santa
@@ -49,9 +57,7 @@ class Login extends Component {
           <input type="text" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}></input><br></br>
           <input type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input><br></br>
           <button type="button" onClick={this.checkLogin}>Login</button><br></br> 
-          <Link to="/signup">
-              <button type="button">Sign Up</button>
-          </Link>
+          <button type="button" onClick={this.signup}>Sign Up</button>
         </form>
       </div>
     );
@@ -66,6 +72,11 @@ class Login extends Component {
       alert(error.message);
     });
   } 
+
+  signup(event){
+    event.preventDefault();
+    window.location = '/signup';
+  }
 }
 
 export default Login;
