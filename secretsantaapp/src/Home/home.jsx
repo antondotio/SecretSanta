@@ -45,7 +45,7 @@ class Home extends Component {
               <a class="active" href="/home">Home</a>
               <a href="/groups">Groups</a>
               <a href="/wishlist">Wishlist</a>
-              <button type="button" onClick={this.logout}>Logout</button><br></br><br></br>
+              <button type="button" onClick={this.logout}>Logout</button><br></br>
               <p className="App-subheader">
               Join group
               </p>
