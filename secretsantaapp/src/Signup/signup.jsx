@@ -92,9 +92,9 @@ class Signup extends Component {
           fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
             // Deal with error if the new user already exists
             var errorCode = error.code;
-            var errorMessage = error.message;
+            alert(error.message);
           });
-          this.saveNewUser();
+          this.saveNewUser(this.state.email);
       }
     }
   }
