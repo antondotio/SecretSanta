@@ -31,19 +31,19 @@ class Home extends Component {
   render(){
     return (
       <div className="Home">
-          <Router>
-            <Switch>
+        <div>
+         {/* <Router>
               <Route exact path="/groups" component={Groups}/>
               <Route exact path="/groups/:groupCode" component={Groups}/>
               <Route exact path="/creategroup" component={CreateGroup}/>
               <Route exact path="/wishlist" component={Wishlist}/>
-            </Switch>
-          </Router>
+          </Router> */}
+        </div> 
           <header className="App-header">
               <p>
               Secret Santa
               </p>
-              <a class="active" href="/home">Home</a>
+              <a class="active" href="/">Home</a>
               <a href="/groups">Groups</a>
               <a href="/wishlist">Wishlist</a>
               <button type="button" onClick={this.logout}>Logout</button><br></br>

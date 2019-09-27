@@ -8,13 +8,13 @@ function logout(){
 }
 
 const Groups = ({match}) => {
-  var docRef = fire.firestore().collection("groups").doc(match.params.groupCode);
-  var id, name, budget;
-  docRef.get().then(function(doc) {
-    if(doc.exists) {
-      id = doc.groupCode;
-    }
-  });
+  // var docRef = fire.firestore().collection("groups").doc(match.params.groupCode);
+  // var id, name, budget;
+  // docRef.get().then(function(doc) {
+  //   if(doc.exists) {
+  //     id = doc.groupCode;
+  //   }
+  // });
 
   return (
       <div className="Groups">
@@ -23,7 +23,7 @@ const Groups = ({match}) => {
               <p>
               Secret Santa
               </p>
-              <a href="/home">Home</a>
+              <a href="/">Home</a>
               <a class="active" href="/groups">Groups</a>
               <a href="/wishlist">Wishlist</a>
               {/* <button type="button" onClick={logout()}>Logout</button><br></br>            */}

@@ -42,7 +42,7 @@ class CreateGroup extends Component {
                     <p>
                         Secret Santa
                     </p>
-                    <a href="/home">Home</a>
+                    <a href="/">Home</a>
                     <a class="active" href="/groups">Groups</a>
                     <a href="/wishlist">Wishlist</a><br></br>
                 </header>

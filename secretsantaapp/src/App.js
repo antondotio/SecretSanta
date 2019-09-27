@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
 import fire from './config/Fire';
 import Login from './Login/login';
-import Home from './Home/home';
+import Homepage from './homepage';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Link,
+  Redirect
+} from "react-router-dom";
+
+import Groups from './Groups/groups';
+import CreateGroup from './Groups/creategroup';
+import Wishlist from './Wishlist/wishlist';
 
 class App extends Component { 
   constructor(props){
@@ -29,7 +40,7 @@ class App extends Component {
   render () {
     return (
       <div>
-        {this.state.user ? (<Home/>) : (<Login/>)}  
+        {this.state.user ? (<Homepage/>) : (<Login/>)}  
       </div>
     );
   }
