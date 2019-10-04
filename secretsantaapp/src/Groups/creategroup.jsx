@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import fire from '../config/Fire';
 import './creategroup.css';
+// import { FORMERR } from 'dns';
 import {
-    BrowserRouter as Router,
-    Route,
-    Switch,
-    Link,
     Redirect
   } from "react-router-dom";
 
@@ -18,6 +15,7 @@ class CreateGroup extends Component {
             id: shortid.generate(),
             groupName: '',
             budget: '',
+            created: false,
         };
         
         this.handleGnameChange = this.handleGnameChange.bind(this);
@@ -33,14 +31,19 @@ class CreateGroup extends Component {
     }
 
     render() {
+        if(this.state.created) {
+            return(
+                <Redirect to={"/groups/" + this.state.id}></Redirect>
+            );
+        }
         return(
             <div className="CreateGroup">
                 <header className="App-header">
                     <p>
                         Secret Santa
                     </p>
-                    <a href="/home">Home</a>
-                    <a class="active" href="/groups">Groups</a>
+                    <a href="/">Home</a>
+                    <a class="active" href="/grouppage">Groups</a>
                     <a href="/wishlist">Wishlist</a><br></br>
                 </header>
                 
@@ -60,17 +63,41 @@ class CreateGroup extends Component {
     }
 
     createGroup(){
-        if(!this.state.groupName || !this.state.budget){
+        if(!this.state.groupName || !this.state.budget || !this.state.id){
             alert("must fill in all text fields");
         } else {
-            fire.firestore().collection("groups").add({
-                id: this.state.id,
-                groupName: this.state.groupName,
-                budget: this.state.budget,
-            });
-            window.location = '/groups/' + this.state.id;
+            this.saveNewGroup();
+            this.setState({created: true});
         }
     }
+
+    saveNewGroup(){
+        var data = {
+            id: this.state.id,
+            groupName: this.state.groupName,
+            budget: this.state.budget,
+        };
+        //Create new Group in database
+        fire.firestore().collection("groups").doc(this.state.id).set(data).then(function() {
+            //alert("works");
+        });
+
+        //Add user to group data
+        var User = fire.auth().currentUser;
+        fire.firestore().collection("groups").doc(this.state.id).collection("members").doc(User.email).set({
+          email: User.email,
+          username: User.displayName,
+        });
+
+        //Add group to user data
+        fire.firestore().collection("users").doc(User.email).collection("groupList").doc(this.state.id).set({
+            name: this.state.groupName,
+            admin: true,
+            id: this.state.id,
+        });
+        // window.location = "/groups/" + this.state.id;
+    }
+        
 }
 
 export default CreateGroup;

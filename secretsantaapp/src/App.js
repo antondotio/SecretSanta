@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import fire from './config/Fire';
 import Login from './Login/login';
-import Home from './Home/home';
+import Homepage from './homepage';
 
 class App extends Component { 
   constructor(props){
@@ -13,6 +13,7 @@ class App extends Component {
   }
 
   componentDidMount(){
+    console.log(fire.auth().currentUser);
     this.authListener();
   }
 
@@ -29,7 +30,7 @@ class App extends Component {
   render () {
     return (
       <div>
-        {this.state.user ? (<Home/>) : (<Login/>)}  
+        {this.state.user ? (<Homepage/>) : (<Login/>)}  
       </div>
     );
   }

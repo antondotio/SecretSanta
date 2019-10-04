@@ -31,3 +31,7 @@
     height: calc(50px + 2vmin);
     font-size: calc(10px + 2vmin)
   }
+
+  .table {
+    font-size: calc(10px + 2vmin)
+  }

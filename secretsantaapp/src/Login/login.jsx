@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import './login.css';
 import fire from '../config/Fire';
-import Home from '../Home/home';
 
 import {
     BrowserRouter as Router,
     Route,
     Switch,
-    Link,
-    Redirect
   } from "react-router-dom";
 
   import Signup from '../Signup/signup';
@@ -68,7 +65,7 @@ class Login extends Component {
     event.preventDefault();
     fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
       // Handle Errors here.
-      var errorCode = error.code;
+      // var errorCode = error.code;
       alert(error.message);
     });
   } 

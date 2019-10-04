@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import './signup.css';
 import fire from '../config/Fire';
 import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Link,
-  Redirect
+  Link
 } from "react-router-dom";
 
 
@@ -84,27 +80,33 @@ class Signup extends Component {
   }
   
   signUp() {
+    var errorCode;
     if(!this.state.firstName || !this.state.lastName || !this.state.username || !this.state.email
       || !this.state.password || !this.state.confirmPassword) {
       alert("must fill in all text fields");
     } else {
-        if(this.state.confirmPassword == this.state.password) {
-          fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+        if(this.state.confirmPassword === this.state.password) {
+          fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then(() =>{
+            fire.auth().currentUser.updateProfile({
+              //put user info in
+              displayName: this.state.username,
+            })
+          }).catch((error) => {
             // Deal with error if the new user already exists
-            var errorCode = error.code;
+            errorCode = error.code;
             alert(error.message);
           });
-          this.saveNewUser(this.state.email);
+            if(!errorCode)
+              this.saveNewUser();
       }
     }
   }
 
   saveNewUser() {
-    fire.firestore().collection("users").add({
-      //id: fire.auth().currentUser().getUid(),
-      email: this.state.email
+    fire.firestore().collection("users").doc(this.state.email).set({
+      email: this.state.email,
+      username: this.state.username,
     });
-    //this.setState({complete: true});
   }
 }
 
