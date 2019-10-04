@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import './home.css';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Link,
-  Redirect
-} from "react-router-dom";
+//import {Tab, Tabs, TabList, TabPanel} from "react-tabs";
+import 'react-tabs/style/react-tabs.css';
+import {Redirect} from 'react-router-dom';
 
-import Groups from '../Groups/groups';
-import CreateGroup from '../Groups/creategroup';
-import Wishlist from '../Wishlist/wishlist';
 import fire from '../config/Fire';
 
 class Home extends Component {
@@ -18,10 +11,16 @@ class Home extends Component {
     super(props);
     this.state = {
       groupCode: '',
+      tabIndex: 0,
+      joinedGroup: false,
     };
 
     this.handleGcodeChange = this.handleGcodeChange.bind(this);
     this.logout = this.logout.bind(this);
+  }
+
+  componentDidMount() {
+    //console.log(fire.auth().currentUser);
   }
 
   handleGcodeChange(event){
@@ -31,41 +30,63 @@ class Home extends Component {
   render(){
     return (
       <div className="Home">
-          <Router>
-            <Switch>
-              <Route exact path="/groups" component={Groups}/>
-              <Route exact path="/creategroup" component={CreateGroup}/>
-              <Route exact path="/wishlist" component={Wishlist}/>
-            </Switch>
-          </Router>
           <header className="App-header">
               <p>
               Secret Santa
               </p>
-              <a class="active" href="/home">Home</a>
-              <a href="/groups">Groups</a>
+              <a class="active" href="/">Home</a>
+              <a href="/grouppage">Groups</a>
               <a href="/wishlist">Wishlist</a>
-              <button type="button" onClick={this.logout}>Logout</button><br></br>
-              <p className="App-subheader">
-              Join group
-              </p>
+              <button type="button" onClick={this.logout}>Logout</button>
+              <button type="button" onClick={this.check}>check</button><br></br>
           </header>
-          <form>
-            <input type="text" placeholder="Group Code" value={this.state.groupCode} onChange={this.handleGcodeChange}></input><br></br>
-            <Router>
-              <Link to ='/groups/:groupCode'>
-                <button type="button" onClick={() => this.joinGroup()}>Join Group</button><br></br>
-              </Link> 
-            </Router>
-                <button type="button" onClick={this.createGroup}>Create Group</button><br></br>
-          </form>
+                    <form>
+                      <p className="App-subheader">
+                        Join group
+                      </p>
+                      <input type="text" placeholder="Group Code" value={this.state.groupCode} onChange={this.handleGcodeChange}></input><br></br>
+                      <button type="button" onClick={() => this.joinGroup()}>Join Group</button><br></br>
+                      <button type="button" onClick={this.createGroup}>Create Group</button><br></br>
+                    </form>
+              {this.state.joinedGroup ? <Redirect to={"/groups/" + this.state.groupCode}/> : <p></p>}
       </div>
     );
   }
 
   joinGroup(event){
-    event.preventDefault();
-    window.location = '/groups/:groupCode';
+    //TODO: Redirect to 404 if page not found
+    //TODO: Add checker if user already in group query to find name .where("email",User.email)
+    if(this.state.groupCode) {
+      var User = fire.auth().currentUser;
+      var docRef = fire.firestore().collection("groups").doc(this.state.groupCode);
+
+      //Add New User
+      docRef.get().then(() => {
+        fire.firestore().collection("groups").doc(this.state.groupCode).collection("members").doc(User.email).set({
+          email: User.email,
+          username: User.displayName,
+        });
+      });
+        
+      //Add group to user data
+      docRef.get().then((doc) => {
+        if(doc.exists) {
+          //Put group in user database
+          fire.firestore().collection("users").doc(User.email).collection("groupList").doc(this.state.groupCode).set({
+            name: doc.data().groupName,
+            admin: false,
+            id: this.state.groupCode,
+          });
+          this.setState({
+            joinedGroup: true,
+          });
+        } else {
+          alert("Group does not exist!");
+        }
+      });
+    } else {
+      alert("Must enter a group code!");
+    }
   }
 
   createGroup(event){
@@ -76,6 +97,14 @@ class Home extends Component {
 
   logout(){
     fire.auth().signOut();
+  }
+
+  check() {
+    if(fire.auth().currentUser) {
+      alert(fire.auth().currentUser.email);
+    } else {
+      alert("!user");
+    }
   }
 }
 export default Home;
