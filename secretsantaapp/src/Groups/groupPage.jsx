@@ -7,9 +7,9 @@ class groupPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      new: true,
-      groups: Array(0).fill(0),
-      groupId: Array(0).fill(0),
+      new: true, //boolean if the page just opened or not
+      groups: Array(0).fill(0), //An array of the id of all group names the user is participating in
+      groupId: Array(0).fill(0), //An array of the id of all group Id's the user is participating in
     }
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.findPage = this.findPage.bind(this);
@@ -21,17 +21,17 @@ class groupPage extends Component {
       var docRef = fire.firestore().collection("users").doc(User.email).collection("groupList");
       docRef.get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          var groups = this.state.groups.slice();
-          var groupId = this.state.groupId.slice();
-          groups.push(doc.data().name);
-          groupId.push(doc.data().id);
+          var groups = this.state.groups.slice(); //copies group name array
+          var groupId = this.state.groupId.slice(); //compies group id array
+          groups.push(doc.data().name); //fills array
+          groupId.push(doc.data().id); //fills array
           this.setState({
-            groups: groups,
-            groupId: groupId,
+            groups: groups, //saves state
+            groupId: groupId, //saves state
           });
         });
       });
-      this.setState({new: false});
+      this.setState({new: false}); //must turn new to false or this will run infinitely
     }
   }
 
@@ -52,6 +52,7 @@ class groupPage extends Component {
             <div className="Member">
               Groups: 
             </div>  
+            {/* fill */}
             {this.state.groupId.map((i) =>{
               return (
                 <a href={this.findPage(i)}>
