@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import fire from '../config/Fire';
 import './creategroup.css';
-import { FORMERR } from 'dns';
+// import { FORMERR } from 'dns';
 import {
     Redirect
   } from "react-router-dom";
@@ -43,7 +43,7 @@ class CreateGroup extends Component {
                         Secret Santa
                     </p>
                     <a href="/">Home</a>
-                    <a class="active" href="/groups">Groups</a>
+                    <a class="active" href="/grouppage">Groups</a>
                     <a href="/wishlist">Wishlist</a><br></br>
                 </header>
                 
@@ -77,9 +77,23 @@ class CreateGroup extends Component {
             groupName: this.state.groupName,
             budget: this.state.budget,
         };
-
+        //Create new Group in database
         fire.firestore().collection("groups").doc(this.state.id).set(data).then(function() {
-            alert("works");
+            //alert("works");
+        });
+
+        //Add user to group data
+        var User = fire.auth().currentUser;
+        fire.firestore().collection("groups").doc(this.state.id).collection("members").doc(User.email).set({
+          email: User.email,
+          username: User.displayName,
+        });
+
+        //Add group to user data
+        fire.firestore().collection("users").doc(User.email).collection("groupList").doc(this.state.id).set({
+            name: this.state.groupName,
+            admin: true,
+            id: this.state.id,
         });
         // window.location = "/groups/" + this.state.id;
     }

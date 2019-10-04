@@ -2,17 +2,6 @@ import React, { Component } from 'react';
 import fire from './config/Fire';
 import Login from './Login/login';
 import Homepage from './homepage';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Link,
-  Redirect
-} from "react-router-dom";
-
-import Groups from './Groups/groups';
-import CreateGroup from './Groups/creategroup';
-import Wishlist from './Wishlist/wishlist';
 
 class App extends Component { 
   constructor(props){
@@ -24,6 +13,7 @@ class App extends Component {
   }
 
   componentDidMount(){
+    console.log(fire.auth().currentUser);
     this.authListener();
   }
 

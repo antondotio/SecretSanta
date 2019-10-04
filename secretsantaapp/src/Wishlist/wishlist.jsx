@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './wishlist.css';
 import fire from '../config/Fire';
-import Home from '../Home/home';
-import CreateGroup from '../Groups/creategroup';
-import Groups from '../Groups/groups';
+// import Home from '../Home/home';
+// import CreateGroup from '../Groups/creategroup';
+// import Groups from '../Groups/groups';
 
 class Wishlist extends Component {
   render() {
@@ -15,7 +15,7 @@ class Wishlist extends Component {
               Secret Santa
               </p>
               <a href="/">Home</a>
-              <a href="/groups">Groups</a>
+              <a href="/grouppage">Groups</a>
               <a class="active" href="/wishlist">Wishlist</a>
               <button type="button" onClick={this.logout}>Logout</button><br></br>
               

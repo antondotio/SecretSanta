@@ -7,7 +7,39 @@
   }
   
   .App-header {
+    text-align: center;
     font-size: calc(50px + 2vmin);
     color: white;
   }
+
+  .Member {
+    text-align: Left;
+    padding-left: 30px;
+    font-size: calc(20px + 2vmin);
+    color: white;
+  }
   
+  .Info {
+    text-align: center;
+    color: white;
+  }
+
+  .Table {
+    display: flex;
+    padding: 10px 30px;
+    align-items: center; 
+    margin: 0 auto;
+    list-style: none;
+  }
+
+  .row {
+    display: flex;
+    align-items: center; 
+    min-width: 696px;
+    list-style: none;
+    padding-top: 20px;
+  }
+
+  li {
+    padding: 10px 10px;
+  }
