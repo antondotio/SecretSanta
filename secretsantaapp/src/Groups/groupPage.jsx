@@ -52,7 +52,7 @@ class groupPage extends Component {
             <div className="Member">
               Groups: 
             </div>  
-            {/* fill */}
+            {/* basically a loop that creates an entity of Group for each item in the array */}
             {this.state.groupId.map((i) =>{
               return (
                 <a href={this.findPage(i)}>
@@ -64,6 +64,7 @@ class groupPage extends Component {
       );
  }
 
+  //used for line 58 -- returns the link of each group
   findPage(i) {
     return("/groups/" + i);
   }
@@ -72,6 +73,7 @@ class groupPage extends Component {
     fire.auth().signOut();
   }
 
+  //checks if user is signed in, only used to debugging
   check() {
     if(fire.auth().currentUser) {
       alert(fire.auth().currentUser.email);
