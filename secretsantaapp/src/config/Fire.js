@@ -1,13 +1,14 @@
 import firebase from 'firebase';
 
 const config = {
-    apiKey: "AIzaSyAWXGk6i4BBG7DWNthbqj23P80Q8kP0i_4",
-    authDomain: "secretsanta-1cd15.firebaseapp.com",
-    databaseURL: "https://secretsanta-1cd15.firebaseio.com",
-    projectId: "secretsanta-1cd15",
-    storageBucket: "",
-    messagingSenderId: "885828088715",
-    appId: "1:885828088715:web:8a73b87539d479991db58e"
+    apiKey: "AIzaSyBP6qhvOa2NZ5Hip9yD3zUAkJryWxLcfTs",
+    authDomain: "secretsanta-f3cbd.firebaseapp.com",
+    databaseURL: "https://secretsanta-f3cbd.firebaseio.com",
+    projectId: "secretsanta-f3cbd",
+    storageBucket: "secretsanta-f3cbd.appspot.com",
+    messagingSenderId: "1030019629313",
+    appId: "1:1030019629313:web:9b396ccd78e27b67a9db00",
+    measurementId: "G-BGG66EYEDF"
 };
 
 const fire = firebase.initializeApp(config);
