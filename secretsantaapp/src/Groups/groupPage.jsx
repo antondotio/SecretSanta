@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import fire from '../config/Fire';
 import './groups.css';
-import Group from './groupEntity';
+import Groups from './groupEntity';
 
 class groupPage extends Component {
   constructor(props) {
@@ -56,7 +56,7 @@ class groupPage extends Component {
             {this.state.groupId.map((i) =>{
               return (
                 <a href={this.findPage(i)}>
-                  <Group value={i}/>
+                  <Groups value={i}/>
                 </a>
               );
             })}

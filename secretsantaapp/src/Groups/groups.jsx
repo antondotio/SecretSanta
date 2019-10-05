@@ -15,7 +15,7 @@ class Groups extends Component{
       id: props.groupCode,
       name: '',
       budget: '',
-      users: Array(20).fill(null), //Maximum of 0 members per group
+      users: Array(20).fill(null), //Maximum of 20 members per group
     }
 
     this.componentDidMount = this.componentDidMount.bind(this);

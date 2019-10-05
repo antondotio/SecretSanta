@@ -7,4 +7,4 @@ function groupUser(props) {
   )
 }
 
-export default groupUser
+export default groupUser;

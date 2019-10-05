@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './home.css';
 //import {Tab, Tabs, TabList, TabPanel} from "react-tabs";
-import 'react-tabs/style/react-tabs.css';
+//import 'react-tabs/style/react-tabs.css';
 import {Redirect} from 'react-router-dom';
 
 import fire from '../config/Fire';
@@ -30,25 +30,25 @@ class Home extends Component {
   render(){
     return (
       <div className="Home">
-          <header className="App-header">
-              <p>
-              Secret Santa
-              </p>
-              <a class="active" href="/">Home</a>
-              <a href="/grouppage">Groups</a>
-              <a href="/wishlist">Wishlist</a>
-              <button type="button" onClick={this.logout}>Logout</button>
-              <button type="button" onClick={this.check}>check</button><br></br>
-          </header>
-                    <form>
-                      <p className="App-subheader">
-                        Join group
-                      </p>
-                      <input type="text" placeholder="Group Code" value={this.state.groupCode} onChange={this.handleGcodeChange}></input><br></br>
-                      <button type="button" onClick={() => this.joinGroup()}>Join Group</button><br></br>
-                      <button type="button" onClick={this.createGroup}>Create Group</button><br></br>
-                    </form>
-              {this.state.joinedGroup ? <Redirect to={"/groups/" + this.state.groupCode}/> : <p></p>}
+        <header className="App-header">
+            <p>
+            Secret Santa
+            </p>
+            <a class="active" href="/">Home</a>
+            <a href="/grouppage">Groups</a>
+            <a href="/wishlist">Wishlist</a>
+            <button type="button" onClick={this.logout}>Logout</button>
+            <button type="button" onClick={this.check}>check</button><br></br>
+        </header>
+        <form>
+          <p className="App-subheader">
+            Join group
+          </p>
+          <input type="text" placeholder="Group Code" value={this.state.groupCode} onChange={this.handleGcodeChange}></input><br></br>
+          <button type="button" onClick={() => this.joinGroup()}>Join Group</button><br></br>
+          <button type="button" onClick={this.createGroup}>Create Group</button><br></br>
+        </form>
+        {this.state.joinedGroup ? <Redirect to={"/groups/" + this.state.groupCode}/> : <p></p>}
       </div>
     );
   }
