@@ -21,7 +21,8 @@
   color: white;
 }
 
-.Item{
+.Item{    
+  text-align: center;
   font-size: calc(15px + 2vmin);
   color: white;
 }

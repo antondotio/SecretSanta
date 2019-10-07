@@ -92,7 +92,6 @@ class Home extends Component {
   createGroup(event){
     event.preventDefault();
     window.location = '/creategroup';
-
   }
 
   logout(){

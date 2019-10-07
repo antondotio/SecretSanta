@@ -5,6 +5,7 @@ import CreateGroup from './Groups/creategroup';
 import Wishlist from './Wishlist/wishlist';
 import Home from './Home/home';
 import GroupPage from './Groups/groupPage';
+import WishlistPage from './Wishlist/wishlistPage'
 
 import {
     BrowserRouter as Router,
@@ -21,7 +22,8 @@ import {
           {/* <Route exact path="/groups" component={Groups}/> */}
           <Route exact path="/groups/:groupCode" render={({match}) => <Groups groupCode={match.params.groupCode} user={fire.auth().currentUser}/>}/>
           <Route exact path="/creategroup" component={CreateGroup}/>
-          <Route exact path="/wishlist" component={Wishlist}/>
+          <Route exact path="/wishlist" component={WishlistPage}/>
+          <Route exact path="/wishlistadd" component={Wishlist}/>
         </Switch>
       </Router>
     );
