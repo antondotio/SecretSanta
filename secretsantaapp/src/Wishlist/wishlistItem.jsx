@@ -16,7 +16,7 @@ class WishlistItem extends Component {
     this.displayItem();
   }
   
-  displayName() {
+  displayItem() {
     var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.email).collection("wishlist");
     docRef.where("id", "==", this.state.id).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {

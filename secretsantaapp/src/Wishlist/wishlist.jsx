@@ -91,6 +91,7 @@ class Wishlist extends Component {
       name: this.state.name,
       link: this.state.link,
       price: this.state.price,
+      id: this.state.id,
       admin: true
     });
     

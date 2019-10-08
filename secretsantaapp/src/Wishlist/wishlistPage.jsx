@@ -25,7 +25,7 @@ class WishlistPage extends Component {
 					var wishes = this.state.wishes.slice(); 
 					var wishesId = this.state.wishesId.slice();
 					wishes.push(doc.data().name); //fills array
-					wishes.push(doc.data().id)
+					wishesId.push(doc.data().id);
 					this.setState({
 						wishes: wishes,
 						wishesId: wishesId
