@@ -56,9 +56,11 @@ class Home extends Component {
             Join group
           </p>
           <input type="text" placeholder="Group Code" value={this.state.groupCode} onChange={this.handleGcodeChange}></input><br></br>
-          <h>   </h>
+          <a>&emsp;</a><br></br>
           <button type="button" onClick={() => this.joinGroup()}>Join Group</button><br></br>
+          <a>&emsp;</a><br></br>
           <button type="button" onClick={this.createGroup}>Create Group</button><br></br>
+          
         </form>
         {this.state.joinedGroup ? <Redirect to={"/groups/" + this.state.groupCode}/> : <p></p>}
       </div>

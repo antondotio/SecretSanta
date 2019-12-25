@@ -10,7 +10,7 @@ class WishlistPage extends Component {
 			new: true,
 			wishes: Array(0).fill(0),
       wishesId: Array(0).fill(0),
-      username: null,
+      username: props.userId,
 		}
 
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
@@ -18,35 +18,25 @@ class WishlistPage extends Component {
 	}
 
 	componentDidUpdate(){
-		if(this.state.username === null){
-      var User = fire.auth().currentUser;
-      if(this.state.new){
-        var docRef = fire.firestore().collection("users").doc(User.email).collection("wishlist");
-        docRef.get().then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            var wishes = this.state.wishes.slice(); 
-            var wishesId = this.state.wishesId.slice();
-            wishes.push(doc.data().name); //fills array
-            wishesId.push(doc.data().id);
-            this.setState({
-              wishes: wishes,
-              wishesId: wishesId
-            });
-          });
-        });
-        this.setState({
-          new: false
-        });
-      }
-      fire.firestore().collection("users").doc(User.email).get().then((doc) => {
-        if(doc.exists){
+    var User = fire.auth().currentUser;
+    if(this.state.new){
+      var docRef = fire.firestore().collection("users").doc(User.email).collection("wishlist");
+      docRef.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          var wishes = this.state.wishes.slice(); 
+          var wishesId = this.state.wishesId.slice();
+          wishes.push(doc.data().name); //fills array
+          wishesId.push(doc.data().id);
           this.setState({
-            username: doc.data().username
+            wishes: wishes,
+            wishesId: wishesId
           });
-        }
+        });
       });
-
-		}
+      this.setState({
+        new: false
+      });
+    }
 	}
 	
 	render() {
@@ -67,8 +57,9 @@ class WishlistPage extends Component {
           <a>&emsp;</a>
 				</form>
 				{this.state.wishesId.map((i) =>{
+          let props = {value: i, userEmail: this.props.user.email}
           return(
-            <h2><Items value={i}></Items></h2>
+            <h2><Items props={props} ></Items></h2>
           );
         })}
       </div>
@@ -80,13 +71,9 @@ class WishlistPage extends Component {
     window.location = '/wishlist/' + this.state.username + '/add';
   }
 
-  // check() {
-  //   if(fire.auth().currentUser) {
-  //     alert(fire.auth().currentUser.email);
-  //   } else {
-  //     alert("!user");
-  //   }
-  // }
+  logout(){
+    fire.auth().signOut();
+  }
 }
 
 export default WishlistPage;

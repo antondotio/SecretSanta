@@ -6,7 +6,8 @@ class WishlistItem extends Component {
   constructor(props){
     super(props);
     this.state ={
-      id: props.value,
+      id: props.props.value,
+      userEmail:props.props.userEmail,
       name: '',
       link: '',
       price: ''
@@ -15,9 +16,9 @@ class WishlistItem extends Component {
     this.displayItem = this.displayItem.bind(this);
     this.displayItem();
   }
-  
+
   displayItem() {
-    var docRef = fire.firestore().collection("users").doc(fire.auth().currentUser.email).collection("wishlist");
+    var docRef = fire.firestore().collection("users").doc(this.state.userEmail).collection("wishlist");
     docRef.where("id", "==", this.state.id).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         this.setState({
@@ -32,8 +33,7 @@ class WishlistItem extends Component {
   render() {
     return (
       <div className="Item" >
-        <a href={this.state.link} target="_blank">{this.state.name}</a>
-        <a> &emsp;{'$' + this.state.price}</a>
+        <b><a href={this.state.link} target="_blank">{this.state.name}</a> &emsp;{'$' + this.state.price}</b>
       </div>
     );
   }

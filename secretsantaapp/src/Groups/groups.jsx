@@ -77,7 +77,6 @@ class Groups extends Component{
           recipient = doc.data().recipient;
           username = doc.data().username;
         }
-        console.log(recipient);
         currentComponent.setState({
           recipient: recipient,
           username: username
@@ -114,7 +113,7 @@ class Groups extends Component{
             <Popup
               trigger={
                 // todo fix this 
-                <Link to={'/wishlist/' + this.state.recipient}> 
+                <Link to={'/gifteewishlist/' + this.state.recipient} username={this.state.username}> 
                   <button type="button" onClick={this.redirectToWishlist}>View Your Giftee's Wishlist</button>
                 </Link>
               }

@@ -29,3 +29,20 @@
   font-weight: normal;
   line-height: 0%;
 }
+
+b{
+  font-size: calc(7px + 2vmin);
+  font-weight: normal;
+}
+
+a:link {
+  color: #03cdff;
+}
+
+a:visited{
+  color: #e7a3ff;
+}
+
+a:hover {
+  color: #e7a3ff;
+}
