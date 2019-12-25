@@ -10,6 +10,7 @@ class WishlistPage extends Component {
 			new: true,
 			wishes: Array(0).fill(0),
       wishesId: Array(0).fill(0),
+      username: null,
 		}
 
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
@@ -17,22 +18,34 @@ class WishlistPage extends Component {
 	}
 
 	componentDidUpdate(){
-		if(this.state.new){
-			var User = fire.auth().currentUser;
-			var docRef = fire.firestore().collection("users").doc(User.email).collection("wishlist");
-			docRef.get().then((querySnapshot) => {
-				querySnapshot.forEach((doc) => {
-					var wishes = this.state.wishes.slice(); 
-					var wishesId = this.state.wishesId.slice();
-					wishes.push(doc.data().name); //fills array
-					wishesId.push(doc.data().id);
-					this.setState({
-						wishes: wishes,
-						wishesId: wishesId
-					});
-				});
-			});
-			this.setState({ new: false });
+		if(this.state.username === null){
+      var User = fire.auth().currentUser;
+      if(this.state.new){
+        var docRef = fire.firestore().collection("users").doc(User.email).collection("wishlist");
+        docRef.get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            var wishes = this.state.wishes.slice(); 
+            var wishesId = this.state.wishesId.slice();
+            wishes.push(doc.data().name); //fills array
+            wishesId.push(doc.data().id);
+            this.setState({
+              wishes: wishes,
+              wishesId: wishesId
+            });
+          });
+        });
+        this.setState({
+          new: false
+        });
+      }
+      fire.firestore().collection("users").doc(User.email).get().then((doc) => {
+        if(doc.exists){
+          this.setState({
+            username: doc.data().username
+          });
+        }
+      });
+
 		}
 	}
 	
@@ -44,13 +57,14 @@ class WishlistPage extends Component {
             Secret Santa
             </p>
             <a href="/">Home</a>
-            <a href="/grouppage">Groups</a>
-            <a class="active" href="/wishlist">Wishlist</a>
+            <a href="/groups">Groups</a>
+            <a className="active" href={"/wishlist/" + this.state.username}>Wishlist</a>
             <button type="button" onClick={this.logout}>Logout</button><br></br>
         </header>
-        <h3 class="Subheader">Wishlist</h3>
+        <h3 class="Subheader">Your Wishlist</h3>
 				<form>
-					<button type="button" onClick={this.addToList}>Add to List</button><br></br>
+					<button type="button" onClick={this.addToList}>Add Item to Wishlist</button><br></br>
+          <a>&emsp;</a>
 				</form>
 				{this.state.wishesId.map((i) =>{
           return(
@@ -63,8 +77,16 @@ class WishlistPage extends Component {
 
 	addToList(event){
 		event.preventDefault();
-    window.location = '/wishlistadd';
-	}
+    window.location = '/wishlist/' + this.state.username + '/add';
+  }
+
+  // check() {
+  //   if(fire.auth().currentUser) {
+  //     alert(fire.auth().currentUser.email);
+  //   } else {
+  //     alert("!user");
+  //   }
+  // }
 }
 
 export default WishlistPage;

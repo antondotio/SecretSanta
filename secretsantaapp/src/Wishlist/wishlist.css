@@ -12,8 +12,9 @@
 }
 
 .Subheader{
-  font-size: calc(30px + 2vmin);
+  font-size: calc(20px + 2vmin);
   color: white;
+  font-weight: normal;
 }
 
 .Message{
@@ -23,6 +24,8 @@
 
 .Item{    
   text-align: center;
-  font-size: calc(15px + 2vmin);
+  font-size: calc(7px + 2vmin);
   color: white;
+  font-weight: normal;
+  line-height: 0%;
 }

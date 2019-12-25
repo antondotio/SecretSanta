@@ -11,16 +11,26 @@ class Home extends Component {
     super(props);
     this.state = {
       groupCode: '',
-      tabIndex: 0,
       joinedGroup: false,
+      username: null,
     };
 
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.handleGcodeChange = this.handleGcodeChange.bind(this);
     this.logout = this.logout.bind(this);
   }
 
-  componentDidMount() {
-    //console.log(fire.auth().currentUser);
+  componentDidUpdate() {
+    if(this.state.username === null) {
+      var User = fire.auth().currentUser;
+      fire.firestore().collection("users").doc(User.email).get().then((doc) => {
+        if (doc.exists) {
+          this.setState({
+            username: doc.data().username
+          });
+        }
+      });
+    }
   }
 
   handleGcodeChange(event){
@@ -34,17 +44,19 @@ class Home extends Component {
             <p>
             Secret Santa
             </p>
-            <a class="active" href="/">Home</a>
-            <a href="/grouppage">Groups</a>
-            <a href="/wishlist">Wishlist</a>
+            <a className="active" href="/">Home</a>
+            <a href="/groups">Groups</a>
+            <a href={"/wishlist/" + this.state.username}>Wishlist</a>
             <button type="button" onClick={this.logout}>Logout</button>
-            <button type="button" onClick={this.check}>check</button><br></br>
+            {/* <button type="button" onClick={this.check}>check</button> */}
+            <br></br>
         </header>
         <form>
           <p className="App-subheader">
             Join group
           </p>
           <input type="text" placeholder="Group Code" value={this.state.groupCode} onChange={this.handleGcodeChange}></input><br></br>
+          <h>   </h>
           <button type="button" onClick={() => this.joinGroup()}>Join Group</button><br></br>
           <button type="button" onClick={this.createGroup}>Create Group</button><br></br>
         </form>
@@ -96,14 +108,6 @@ class Home extends Component {
 
   logout(){
     fire.auth().signOut();
-  }
-
-  check() {
-    if(fire.auth().currentUser) {
-      alert(fire.auth().currentUser.email);
-    } else {
-      alert("!user");
-    }
   }
 }
 export default Home;

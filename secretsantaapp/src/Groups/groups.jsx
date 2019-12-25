@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
-import './groups.css';
+import {Popup, CommentAction} from 'semantic-ui-react';
 import fire from '../config/Fire';
 import User from './groupUser';
+import { Link } from "react-router-dom";
+import './groups.css';
 
 //Used in line 41 -- Checks if User is null
 function isNull(user) {
   return user == null;
+}
+
+const style = {
+  borderRadius: 0,
+  opacity: 1,
+  padding: '1em',
 }
 
 class Groups extends Component{
@@ -15,15 +23,23 @@ class Groups extends Component{
       id: props.groupCode,
       name: '',
       budget: '',
+      date: '',
       users: Array(20).fill(null), //Maximum of 20 members per group
-    }
+      started: null,
+      recipient: null,
+      username: null,
+    };
 
     this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.start = this.start.bind(this);
+    this.redirectToWishlist = this.redirectToWishlist.bind(this);
+
   }
 
   //componentDidMount runs at the start of every program
   componentDidMount() {
+    
     //query the page data (name an budget)
     var docRef = fire.firestore().collection("groups").doc(this.state.id);
     docRef.get().then((doc) => {
@@ -31,6 +47,8 @@ class Groups extends Component{
         this.setState({
           name: doc.data().groupName,
           budget: doc.data().budget,
+          date: doc.data().meetingDate,
+          started: doc.data().started,
         });
       }
     });
@@ -48,6 +66,26 @@ class Groups extends Component{
     });
   }
 
+  componentDidUpdate(){
+    if(this.state.recipient === null) {
+      let currentComponent = this;
+      let recipient, username;
+      var User = fire.auth().currentUser;
+      var docRef = fire.firestore().collection("groups").doc(this.state.id).collection("members").doc(User.email);
+      docRef.get().then(function(doc) {
+        if (doc.exists) {
+          recipient = doc.data().recipient;
+          username = doc.data().username;
+        }
+        console.log(recipient);
+        currentComponent.setState({
+          recipient: recipient,
+          username: username
+        });
+      });
+    }
+  }
+
   //fills user with username of user
   renderUser(i){
     return(
@@ -56,20 +94,39 @@ class Groups extends Component{
   }
 
   render() {
+    // const alert = useAlert()
     return (
       <div className="Groups">    
         <header className="App-header">
           <div>
             {this.state.name}
           </div>          
-          <a class="active" href="/">Home</a>
-          <a href="/grouppage">Groups</a>
-          <a href="/wishlist">Wishlist</a>
+          <a className="active" href="/">Home</a>
+          <a href="/groups">Groups</a>
+          <a href={"/wishlist/" + this.state.username}>Wishlist</a>
         </header> 
         <p className="Info">
           budget: ${this.state.budget} <br/>
-          <button type="button" onClick={this.start}>Start</button><br></br>
+          meeting date: {this.state.date} <br></br>
         </p> 
+        {this.state.started ? 
+          <div>
+            <Popup
+              trigger={
+                // todo fix this 
+                <Link to={'/wishlist/' + this.state.recipient}> 
+                  <button type="button" onClick={this.redirectToWishlist}>View Your Giftee's Wishlist</button>
+                </Link>
+              }
+              content={'your giftee is: '+ this.state.recipient}
+              style={style}
+            />
+            {/* <button type="button" onClick={this.revealRecipient}>Reveal Recipient</button><br></br> */}
+          </div> : 
+          <div>
+            <button type="button" onClick={this.start}>Start</button><br></br>
+          </div>
+        }
         <div className="Member">
           Members:  
         </div>  
@@ -106,17 +163,78 @@ class Groups extends Component{
     );
   }
 
-  //checks to see if there is an even amount of users then randomly pairs them (Not done yet)
-  start() {
-    console.log(this.state.users);
-    if(fire.auth().currentUser) {
-      //alert(fire.auth().currentUser.email);
-    } else {
-      alert("!user");
-    }
+  redirectToWishlist(){
+    
   }
 
+  start() {
+    var numMembers = this.state.users.findIndex(isNull);
+    var actualUsers = Array(numMembers);
+    
+    for (let i = 0; i < numMembers; i++){
+      actualUsers[i] = this.state.users[i];
+    }
+    
+    if (numMembers < 3){
+      alert('groups must have 3 or more members to start!')
+    } else {
+      var recipients = actualUsers.slice();
+      shuffle(recipients, 0);
+
+      for (let j = 0; j < numMembers; j++){
+        if (actualUsers[j] === recipients[j]){
+          //if last member's recipient is themself, swap recipients with second last
+          if (j === numMembers - 1){
+            let temp = recipients[j];
+            recipients[j] = recipients[j-1];
+            recipients[j-1] = temp;
+            //update second last member's recipient 
+            fire.firestore().collection("groups").doc(this.state.id).collection("members").where("username", "==", actualUsers[j-1]).get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                  saveRecipient(doc.id, recipients[j-1], this.state.id);
+                });
+            }).catch(function(error) {
+              console.log("Error getting documents: ", error);
+            });
+
+          } else {
+            shuffle(recipients, j);
+          }
+        } 
+        //save to recipient
+        fire.firestore().collection("groups").doc(this.state.id).collection("members").where("username", "==", actualUsers[j]).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                saveRecipient(doc.id, recipients[j], this.state.id);
+              });
+          }).catch(function(error) {
+            console.log("Error getting documents: ", error);
+          });
+      }
+      this.setState({started: true});
+      fire.firestore().collection("groups").doc(this.state.id).update({
+        started: true
+      });
+    } 
+  }
 }
 
+function saveRecipient(gifterEmail, recipient, gid) {
+  fire.firestore().collection("groups").doc(gid).collection("members").doc(gifterEmail).update({
+    recipient: recipient
+  });
+}
+
+//Fisher-Yates (Knuth) Shuffle
+function shuffle(array, startIndex) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+  while (startIndex !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
+}
 
 export default Groups;

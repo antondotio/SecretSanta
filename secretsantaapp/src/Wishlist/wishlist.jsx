@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './wishlist.css';
 import fire from '../config/Fire';
-import Items from './wishlistItem'
+import {isWebUri} from 'valid-url';
 // import Home from '../Home/home';
 // import CreateGroup from '../Groups/creategroup';
 // import Groups from '../Groups/groups';
@@ -16,12 +16,26 @@ class Wishlist extends Component {
       name: '',
       link: '',
       price: '',
+      username: null,
     };
 
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleLinkChange = this.handleLinkChange.bind(this);
     this.handlePriceChange = this.handlePriceChange.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
+  }
+
+  componentDidUpdate(){
+    if(this.state.username === null) {
+      var User = fire.auth().currentUser;
+      fire.firestore().collection("users").doc(User.email).get().then((doc) => {
+        if (doc.exists) {
+          this.setState({
+            username: doc.data().username
+          });
+        }
+      });
+    }
   }
 
   handleNameChange(event){
@@ -34,17 +48,6 @@ class Wishlist extends Component {
     this.setState({ price: event.target.value });
   }
 
-  componentDidMount(){
-    var docRef = fire.firestore().collection("users").doc("anton.jaime15@gmail.com").collection("wishlist").doc(this.state.id);
-    docRef.get().then((doc) => {
-      if(doc.exists){
-        this.setState({
-          name: doc.data().name
-        });
-      }
-    });
-  }
-
   render() {
     return (
       <div className="Wishlist">
@@ -53,27 +56,28 @@ class Wishlist extends Component {
             Secret Santa
             </p>
             <a href="/">Home</a>
-            <a href="/grouppage">Groups</a>
-            <a class="active" href="/wishlist">Wishlist</a>
+            <a href="/groups">Groups</a>
+            <a href={"/wishlist/" + this.state.username}>Wishlist</a>
             <button type="button" onClick={this.logout}>Logout</button><br></br>
         </header>
-        <h3 class="Subheader">Wishlist</h3>
+        <h3 class="Subheader">Add to Wishlist</h3>
         <form id="myForm">
-          <input type="text" placeholder="Item Name" value={this.state.name} onChange={this.handleNameChange}></input>
-          <input type="text" placeholder="Item Link" value={this.state.link} onChange={this.handleLinkChange}></input>
+          <input type="text" placeholder="Item Name" value={this.state.name} onChange={this.handleNameChange}></input><br></br>
+          <input type="text" placeholder="Item Link" value={this.state.link} onChange={this.handleLinkChange}></input><br></br>
           <input type="number" placeholder="Price" value={this.state.price} onChange={this.handlePriceChange}></input><br></br>
+          <br></br>
           <button type="button" onClick={() => this.addItem()}>Add item</button><br></br>
         </form>
       </div>
     );
-
   }
 
   addItem(){
-
     if(!this.state.name || !this.state.link || !this.state.price){
       alert("must fill in all fields!");
-    } else {
+    } else if (!isWebUri(this.state.link)){ 
+      alert("the link you entered is invalid!\nremember to include http(s)://")
+    }else {
       this.saveItem();
       this.setState({
         id: shortid.generate(),

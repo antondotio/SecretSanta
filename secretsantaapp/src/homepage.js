@@ -18,12 +18,13 @@ import {
       <Router>
         <Switch>
           <Route exact path="/" component={Home}/>
-          <Route exact path="/grouppage" component={GroupPage}/>
+          <Route exact path="/groups" component={GroupPage}/>
           {/* <Route exact path="/groups" component={Groups}/> */}
           <Route exact path="/groups/:groupCode" render={({match}) => <Groups groupCode={match.params.groupCode} user={fire.auth().currentUser}/>}/>
           <Route exact path="/creategroup" component={CreateGroup}/>
-          <Route exact path="/wishlist" component={WishlistPage}/>
-          <Route exact path="/wishlistadd" component={Wishlist}/>
+          {/* <Route exact path="/wishlist" component={WishlistPage}/> */}
+          <Route exact path="/wishlist/:userId" render={({match}) => <WishlistPage userId={match.params.userId} user={fire.auth().currentUser}/>}/>
+          <Route exact path="/wishlist/:userId/add" render={({match}) => <Wishlist userId={match.params.userId} user={fire.auth().currentUser}/>}/>
         </Switch>
       </Router>
     );

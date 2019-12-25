@@ -31,7 +31,10 @@ class WishlistItem extends Component {
    
   render() {
     return (
-      <div className="Item">{this.state.name}</div>
+      <div className="Item" >
+        <a href={this.state.link} target="_blank">{this.state.name}</a>
+        <a> &emsp;{'$' + this.state.price}</a>
+      </div>
     );
   }
 }
