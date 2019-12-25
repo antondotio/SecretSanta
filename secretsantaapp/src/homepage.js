@@ -5,8 +5,9 @@ import CreateGroup from './Groups/creategroup';
 import Wishlist from './Wishlist/wishlist';
 import Home from './Home/home';
 import GroupPage from './Groups/groupPage';
-import WishlistPage from './Wishlist/wishlistPage'
-import RecipientWishlist from './Wishlist/recipientWishlist'
+import WishlistPage from './Wishlist/wishlistPage';
+import RecipientWishlist from './Wishlist/recipientWishlist';
+import PageNotFound from './pageNotFound/pageNotFound';
 import {
     BrowserRouter as Router,
     Route,
@@ -25,6 +26,7 @@ import {
           <Route exact path="/gifteewishlist/:userId" render={({match}) => <RecipientWishlist userId={match.params.userId} user={fire.auth().currentUser}/>}/>
           <Route exact path="/wishlist/:userId" render={({match}) => <WishlistPage userId={match.params.userId} user={fire.auth().currentUser}/>}/>
           <Route exact path="/wishlist/:userId/add" render={({match}) => <Wishlist userId={match.params.userId} user={fire.auth().currentUser}/>}/>
+          <Route path="*" component={PageNotFound} />
         </Switch>
       </Router>
     );
