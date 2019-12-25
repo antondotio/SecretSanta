@@ -46,7 +46,10 @@ class CreateGroup extends Component {
   
   handleChange = date => {
     let newDate = new Date(date);
-    if(newDate.getTime() <= new Date().getTime()){
+    newDate.setHours(0,0,0,0);
+    let currentDate = new Date();
+    currentDate.setHours(0,0,0,0);
+    if(newDate.getTime() <= currentDate.getTime()){
       alert('the date you chose already passed!')
     }else {
       this.setState({
@@ -71,7 +74,7 @@ class CreateGroup extends Component {
             <p>
                 Secret Santa
             </p>
-            <a href="/">Home</a>
+            <a href="/home">Home</a>
             <a className="active" href="/groups">Groups</a>
             <a href={"/wishlist/" + this.state.username}>Wishlist</a><br></br>
         </header>
@@ -82,6 +85,7 @@ class CreateGroup extends Component {
             <input type="text" placeholder="Group Name" value={this.state.groupName} onChange={this.handleGnameChange}></input><br></br>
             <input type="number" placeholder="Budget" value={this.state.budget} onChange={this.handleBudgetChange}></input><br></br>
             <DatePicker selected={this.state.selectedDate} onChange={this.handleChange}/><br></br>
+            <a>&ensp;</a><br></br>
             <button type="button" onClick={() => this.createGroup()}>Create Group</button><br></br>
         </form>
       </div>
@@ -89,8 +93,8 @@ class CreateGroup extends Component {
   }
 
   createGroup(){
-      if(!this.state.groupName || !this.state.budget || !this.state.id){
-          alert("must fill in all text fields");
+      if(!this.state.groupName || !this.state.budget || !this.state.id || !this.state.date){
+          alert("must fill in all text fields or select a date after today");
       } else {
           this.saveNewGroup();
           this.setState({created: true});
@@ -123,7 +127,8 @@ class CreateGroup extends Component {
           admin: true,
           id: this.state.id,
       });
-      window.location = "/groups/" + this.state.id;
+      // window.location = "/groups/" + this.state.id;
+      this.forceUpdate();
   }
       
 }

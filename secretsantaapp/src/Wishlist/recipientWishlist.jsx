@@ -58,7 +58,7 @@ class RecipientWishlist extends Component {
             <p>
             Secret Santa
             </p>
-            <a href="/">Home</a>
+            <a href="/home">Home</a>
             <a href="/groups">Groups</a>
             <a className="active" href={"/wishlist/" + this.state.username}>Wishlist</a>
             <button type="button" onClick={this.logout}>Logout</button><br></br>

@@ -33,8 +33,6 @@ class Groups extends Component{
     this.componentDidMount = this.componentDidMount.bind(this);
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
     this.start = this.start.bind(this);
-    this.redirectToWishlist = this.redirectToWishlist.bind(this);
-
   }
 
   //componentDidMount runs at the start of every program
@@ -100,11 +98,12 @@ class Groups extends Component{
           <div>
             {this.state.name}
           </div>          
-          <a className="active" href="/">Home</a>
+          <a className="active" href="/home">Home</a>
           <a href="/groups">Groups</a>
           <a href={"/wishlist/" + this.state.username}>Wishlist</a>
         </header> 
         <p className="Info">
+          group code: {this.state.id} <br/>
           budget: ${this.state.budget} <br/>
           meeting date: {this.state.date} <br></br>
         </p> 
@@ -162,10 +161,6 @@ class Groups extends Component{
     );
   }
 
-  redirectToWishlist(){
-    
-  }
-
   start() {
     var numMembers = this.state.users.findIndex(isNull);
     var actualUsers = Array(numMembers);
@@ -214,6 +209,7 @@ class Groups extends Component{
         started: true
       });
     } 
+    this.forceUpdate();
   }
 }
 

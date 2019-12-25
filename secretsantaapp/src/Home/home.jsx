@@ -44,7 +44,7 @@ class Home extends Component {
             <p>
             Secret Santa
             </p>
-            <a className="active" href="/">Home</a>
+            <a className="active" href="/home">Home</a>
             <a href="/groups">Groups</a>
             <a href={"/wishlist/" + this.state.username}>Wishlist</a>
             <button type="button" onClick={this.logout}>Logout</button>
@@ -105,7 +105,7 @@ class Home extends Component {
 
   createGroup(event){
     event.preventDefault();
-    window.location = '/creategroup';
+    window.location = '/groups/create';
   }
 
   logout(){
