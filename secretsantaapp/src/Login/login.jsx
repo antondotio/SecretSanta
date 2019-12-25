@@ -53,7 +53,9 @@ class Login extends Component {
         <form>
           <input type="text" placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}></input><br></br>
           <input type="password" placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}></input><br></br>
+          <a>&ensp;</a><br></br>
           <button type="button" onClick={this.checkLogin}>Login</button><br></br> 
+          <a>&ensp;</a><br></br>
           <button type="button" onClick={this.signup}>Sign Up</button>
         </form>
       </div>

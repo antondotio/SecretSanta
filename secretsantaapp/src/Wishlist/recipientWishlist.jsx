@@ -73,7 +73,11 @@ class RecipientWishlist extends Component {
         })}
       </div>
     );
-	}
+  }
+  
+  logout(){
+    fire.auth().signOut();
+  }
 }
 
 export default RecipientWishlist;
