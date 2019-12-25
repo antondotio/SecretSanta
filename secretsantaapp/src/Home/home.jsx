@@ -70,57 +70,49 @@ class Home extends Component {
   joinGroup(event){
     //TODO: Add checker if user already in group query to find name .where("email",User.email)
     if(this.state.groupCode) {
-
       var User = fire.auth().currentUser;
       var docRef = fire.firestore().collection("groups").doc(this.state.groupCode);
-
-      
-
+      docRef.collection("members").where("email", "==", User.email).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc){
+          if(doc.exists){
+            alert("You are already a member of this group!")
+          }
+        });
+      }); 
+  
       docRef.get().then((doc)=>{
         if(doc.exists){
-          //if group hasn't started
+          //if group hasnt started add user
           if(!doc.data().started){
-            
-            docRef.collection("members").where("email", "==", User.email).get().then(function(querySnapshot) {
-              querySnapshot.forEach(function(doc){
-                //if member not in group yet
-                if(!doc.exists){
-                  //Add New User
-                  docRef.get().then(() => {
-                    fire.firestore().collection("groups").doc(this.state.groupCode).collection("members").doc(User.email).set({
-                      email: User.email,
-                      username: User.displayName,
-                    });
-                  });
-                    
-                  //Add group to user data
-                  docRef.get().then((doc) => {
-                    if(doc.exists) {
-                      //Put group in user database
-                      fire.firestore().collection("users").doc(User.email).collection("groupList").doc(this.state.groupCode).set({
-                        name: doc.data().groupName,
-                        admin: false,
-                        id: this.state.groupCode,
-                      });
-                      this.setState({
-                        joinedGroup: true,
-                      });
-                    } else {
-                      alert("Group does not exist!");
-                    }
-                  });
-                } else {
-                  alert("You're already a member in this group!")
-                }
+            //Add New User
+            docRef.get().then(() => {
+              fire.firestore().collection("groups").doc(this.state.groupCode).collection("members").doc(User.email).update({
+                email: User.email,
+                username: User.displayName,
               });
             });
-        
-          } else{
-            alert("group already started secret santa!")
+              
+            //Add group to user data
+            docRef.get().then((doc) => {
+              if(doc.exists) {
+                //Put group in user database
+                fire.firestore().collection("users").doc(User.email).collection("groupList").doc(this.state.groupCode).set({
+                  name: doc.data().groupName,
+                  admin: false,
+                  id: this.state.groupCode,
+                });
+                this.setState({
+                  joinedGroup: true,
+                });
+              } else {
+                alert("Group does not exist!");
+              }
+            });
+          }else{
+            alert("Group already started secret santa");
           }
         }
       });
-      
     } else {
       alert("Please enter a group code!");
     }
@@ -134,5 +126,9 @@ class Home extends Component {
   logout(){
     fire.auth().signOut();
   }
+}
+
+function checkForMember(docRef, email){
+  
 }
 export default Home;

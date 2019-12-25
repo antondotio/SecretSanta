@@ -193,6 +193,7 @@ class Groups extends Component{
           } else {
             shuffle(recipients, j);
           }
+          j--;
         } 
         //save to recipient
         fire.firestore().collection("groups").doc(this.state.id).collection("members").where("username", "==", actualUsers[j]).get().then((querySnapshot) => {
@@ -221,7 +222,7 @@ function saveRecipient(gifterEmail, recipient, gid) {
 function shuffle(array, startIndex) {
   var currentIndex = array.length, temporaryValue, randomIndex;
   while (startIndex !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
+    randomIndex = Math.floor(Math.random() * (currentIndex-starIndex)) + startIndex;
     currentIndex -= 1;
     temporaryValue = array[currentIndex];
     array[currentIndex] = array[randomIndex];
