@@ -37,7 +37,6 @@ class Groups extends Component{
 
   //componentDidMount runs at the start of every program
   componentDidMount() {
-    
     //query the page data (name an budget)
     var docRef = fire.firestore().collection("groups").doc(this.state.id);
     docRef.get().then((doc) => {
@@ -65,7 +64,7 @@ class Groups extends Component{
   }
 
   componentDidUpdate(){
-    if(this.state.recipient === null) {
+    if(!this.state.recipient) {
       let currentComponent = this;
       let recipient, username;
       var User = fire.auth().currentUser;
@@ -209,7 +208,6 @@ class Groups extends Component{
         started: true
       });
     } 
-    this.forceUpdate();
   }
 }
 
