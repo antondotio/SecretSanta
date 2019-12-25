@@ -81,16 +81,6 @@ class groupPage extends Component {
   logout(){
     fire.auth().signOut();
   }
-
-  //checks if user is signed in, only used to debugging
-  check() {
-    if(fire.auth().currentUser) {
-      alert(fire.auth().currentUser.email);
-    } else {
-      alert("!user");
-    }
-  }
-
  }
 
 export default groupPage;

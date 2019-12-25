@@ -68,38 +68,61 @@ class Home extends Component {
   }
 
   joinGroup(event){
-    //TODO: Redirect to 404 if page not found
     //TODO: Add checker if user already in group query to find name .where("email",User.email)
     if(this.state.groupCode) {
+
       var User = fire.auth().currentUser;
       var docRef = fire.firestore().collection("groups").doc(this.state.groupCode);
 
-      //Add New User
-      docRef.get().then(() => {
-        fire.firestore().collection("groups").doc(this.state.groupCode).collection("members").doc(User.email).set({
-          email: User.email,
-          username: User.displayName,
-        });
-      });
+      
+
+      docRef.get().then((doc)=>{
+        if(doc.exists){
+          //if group hasn't started
+          if(!doc.data().started){
+            
+            docRef.collection("members").where("email", "==", User.email).get().then(function(querySnapshot) {
+              querySnapshot.forEach(function(doc){
+                //if member not in group yet
+                if(!doc.exists){
+                  //Add New User
+                  docRef.get().then(() => {
+                    fire.firestore().collection("groups").doc(this.state.groupCode).collection("members").doc(User.email).set({
+                      email: User.email,
+                      username: User.displayName,
+                    });
+                  });
+                    
+                  //Add group to user data
+                  docRef.get().then((doc) => {
+                    if(doc.exists) {
+                      //Put group in user database
+                      fire.firestore().collection("users").doc(User.email).collection("groupList").doc(this.state.groupCode).set({
+                        name: doc.data().groupName,
+                        admin: false,
+                        id: this.state.groupCode,
+                      });
+                      this.setState({
+                        joinedGroup: true,
+                      });
+                    } else {
+                      alert("Group does not exist!");
+                    }
+                  });
+                } else {
+                  alert("You're already a member in this group!")
+                }
+              });
+            });
         
-      //Add group to user data
-      docRef.get().then((doc) => {
-        if(doc.exists) {
-          //Put group in user database
-          fire.firestore().collection("users").doc(User.email).collection("groupList").doc(this.state.groupCode).set({
-            name: doc.data().groupName,
-            admin: false,
-            id: this.state.groupCode,
-          });
-          this.setState({
-            joinedGroup: true,
-          });
-        } else {
-          alert("Group does not exist!");
+          } else{
+            alert("group already started secret santa!")
+          }
         }
       });
+      
     } else {
-      alert("Must enter a group code!");
+      alert("Please enter a group code!");
     }
   }
 
