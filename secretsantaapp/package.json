@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "firebase": "^6.6.2",
+    "missing": "0.0.1",
     "moment": "^2.24.0",
     "react": "^16.9.0",
     "react-alert": "^6.0.0",

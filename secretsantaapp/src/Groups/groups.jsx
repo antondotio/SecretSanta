@@ -4,6 +4,7 @@ import fire from '../config/Fire';
 import User from './groupUser';
 import { Link } from "react-router-dom";
 import './groups.css';
+import axios from 'axios';
 
 //Used in line 41 -- Checks if User is null
 function isNull(user) {
@@ -171,30 +172,13 @@ class Groups extends Component{
     if (numMembers < 3){
       alert('groups must have 3 or more members to start!')
     } else {
-      var recipients = actualUsers.slice();
-      shuffle(recipients, 0);
-
-      for (let j = 0; j < numMembers; j++){
-        if (actualUsers[j] === recipients[j]){
-          //if last member's recipient is themself, swap recipients with second last
-          if (j === numMembers - 1){
-            let temp = recipients[j];
-            recipients[j] = recipients[j-1];
-            recipients[j-1] = temp;
-            //update second last member's recipient 
-            fire.firestore().collection("groups").doc(this.state.id).collection("members").where("username", "==", actualUsers[j-1]).get().then((querySnapshot) => {
-              querySnapshot.forEach((doc) => {
-                  saveRecipient(doc.id, recipients[j-1], this.state.id);
-                });
-            }).catch(function(error) {
-              console.log("Error getting documents: ", error);
-            });
-
-          } else {
-            shuffle(recipients, j);
-          }
-          j--;
-        } 
+      axios.get('http://localhost:4000/startGroup', {
+        params: {
+          groupCode: this.state.groupCode,
+        }
+      })
+      .then(res => {
+        var recipients = res.data.recipients;
         //save to recipient
         fire.firestore().collection("groups").doc(this.state.id).collection("members").where("username", "==", actualUsers[j]).get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -202,12 +186,51 @@ class Groups extends Component{
               });
           }).catch(function(error) {
             console.log("Error getting documents: ", error);
-          });
-      }
-      this.setState({started: true});
-      fire.firestore().collection("groups").doc(this.state.id).update({
-        started: true
-      });
+        });
+
+        this.setState({started: true});
+        fire.firestore().collection("groups").doc(this.state.id).update({
+          started: true
+        });
+
+      })
+      // var recipients = actualUsers.slice();
+      // shuffle(recipients, 0);
+
+      // for (let j = 0; j < numMembers; j++){
+      //   if (actualUsers[j] === recipients[j]){
+      //     //if last member's recipient is themself, swap recipients with second last
+      //     if (j === numMembers - 1){
+      //       let temp = recipients[j];
+      //       recipients[j] = recipients[j-1];
+      //       recipients[j-1] = temp;
+      //       //update second last member's recipient 
+      //       fire.firestore().collection("groups").doc(this.state.id).collection("members").where("username", "==", actualUsers[j-1]).get().then((querySnapshot) => {
+      //         querySnapshot.forEach((doc) => {
+      //             saveRecipient(doc.id, recipients[j-1], this.state.id);
+      //           });
+      //       }).catch(function(error) {
+      //         console.log("Error getting documents: ", error);
+      //       });
+
+      //     } else {
+      //       shuffle(recipients, j);
+      //     }
+      //     j--;
+      //   } 
+      //   //save to recipient
+      //   fire.firestore().collection("groups").doc(this.state.id).collection("members").where("username", "==", actualUsers[j]).get().then((querySnapshot) => {
+      //       querySnapshot.forEach((doc) => {
+      //           saveRecipient(doc.id, recipients[j], this.state.id);
+      //         });
+      //     }).catch(function(error) {
+      //       console.log("Error getting documents: ", error);
+      //     });
+      // }
+      // this.setState({started: true});
+      // fire.firestore().collection("groups").doc(this.state.id).update({
+      //   started: true
+      // });
     } 
   }
 }
